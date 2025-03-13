@@ -1,4 +1,4 @@
-package com.example.publixtest.ui.theme
+package com.example.publixtest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
