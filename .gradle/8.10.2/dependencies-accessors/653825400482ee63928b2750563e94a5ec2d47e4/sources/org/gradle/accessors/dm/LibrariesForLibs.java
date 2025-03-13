@@ -337,7 +337,7 @@ public class LibrariesForLibs extends AbstractExternalDependencyFactory {
         public VersionAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
 
         /**
-         * Version alias <b>activityCompose</b> with value <b>1.8.0</b>
+         * Version alias <b>activityCompose</b> with value <b>1.10.1</b>
          * <p>
          * If the version is a rich version and cannot be represented as a
          * single version string, an empty string is returned.
