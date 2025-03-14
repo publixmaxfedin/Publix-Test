@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialogPadding">10dp</dimen>
+
+    <dimen name="bigTextSize">18sp</dimen>
+    <dimen name="smallTextSize">14sp</dimen>
+</resources>
