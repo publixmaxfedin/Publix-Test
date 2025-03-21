@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Publix Test</string>
-    <string name="fetchButton">Fetch Quotes</string>
-    <string name="error">Error Fetching Quotes</string>
 </resources>
