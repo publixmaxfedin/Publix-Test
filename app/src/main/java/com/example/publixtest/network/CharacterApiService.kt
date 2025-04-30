@@ -36,6 +36,6 @@ data class LocationDto(
 )
 
 interface CharacterApiService {
-    @GET("character")
-    suspend fun getCharacters(@Query("page") page: Int? = null): CharacterResponse
+    @GET("character?page=1")
+    suspend fun getCharacters(@Query("page")page:Int): CharacterResponse
 } 

@@ -4,66 +4,136 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.publixtest.ui.theme.PublixTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private val viewModel : MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            PublixTestTheme {
-                MainScreen()
+
+            val character = viewModel.characters.collectAsState(initial = emptyList())
+            val isLoading = viewModel.isLoading.collectAsState(initial = false)
+            val error = viewModel.error.collectAsState(initial = "")
+
+
+            CharacterListScreen(
+                character = character.value,
+                isLoading = isLoading.value,
+                error = error.value,
+                onRefresh = {viewModel.fetchCharacters()}
+            )
+        }
+    }
+
+
+
+
+@Composable
+fun CharacterListScreen(
+    character: List<Character>,
+    isLoading : Boolean,
+    error : String?,
+    onRefresh:()->Unit
+) {
+   Column(
+       modifier = Modifier
+           .fillMaxSize()
+           .padding(10.dp)
+   ) {
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            error !=null -> {
+                Text(
+                    text = "Error"
+                )
+            }
+            else -> {
+                LazyColumn (
+                    modifier =  Modifier.weight(1f)
+                ) {
+                    items(character) { character->
+                        CharacterCard(character)
+                    }
+                }
+            }
+
+        }
+       Button(
+           onClick = onRefresh,
+           modifier =  Modifier.fillMaxWidth()
+               .padding(top = 16.dp)
+       ) {
+           Text("Refresh")
+       }
+   }
+}
+
+
+
+@Composable
+fun CharacterCard(character: Character) {
+    Card(
+        modifier = Modifier.fillMaxSize()
+            .padding(vertical = 8.dp)
+    ) {
+
+        Row(modifier = Modifier.padding(16.dp)) {
+            Column {
+                Text(
+                    text = character.name,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text= "Status : ${character.status}"
+                )
+                Text(
+                    text = "Species: ${character.species}"
+                )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Rick and Morty Characters") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        }
-    ) { paddingValues ->
-        // Placeholder - candidates will need to implement this
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("Implement Rick and Morty characters list here")
-        }
-    }
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
     PublixTestTheme {
-        MainScreen()
+
     }
 }
