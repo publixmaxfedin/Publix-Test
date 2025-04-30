@@ -51,12 +51,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    
+    testImplementation("org.mockito:mockito-inline:5.5.0")
     // Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     // Retrofit for network calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -68,6 +68,21 @@ dependencies {
     
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // JUnit for unit testing
+    testImplementation ("junit:junit:4.13.2")
+
+    // Mockito for mocking dependencies
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    // Kotlin Coroutines Testing
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    // AndroidX testing libraries (optional for LiveData or instrumentation tests)
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("org.mockito:mockito-inline:4.11.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

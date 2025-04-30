@@ -7,6 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +35,18 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchCharacters() {
-        // To be implemented by candidate
+        _isLoading.value = true
+        viewModelScope.launch {
+            characterRepository.getCharacters()
+                .onEach {
+                    _characters.value = it
+                }
+                .catch { e ->
+                    _error.value = e.message
+                }
+                .onCompletion {
+                    _isLoading.value = false
+                }.collect()
+        }
     }
 }
