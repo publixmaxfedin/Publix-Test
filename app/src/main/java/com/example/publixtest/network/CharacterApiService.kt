@@ -20,14 +20,14 @@ data class CharacterDto(
     val name: String,
     val status: String,
     val species: String,
-    val type: String,
-    val gender: String,
-    val origin: LocationDto,
-    val location: LocationDto,
+    val type: String = "",
+    val gender: String ="",
+    val origin: LocationDto? = LocationDto("a","test"),
+    val location: LocationDto? =  LocationDto("a","test"),
     val image: String,
-    val episode: List<String>,
-    val url: String,
-    val created: String
+    val episode: List<String>? = emptyList(),
+    val url: String="",
+    val created: String=""
 )
 
 data class LocationDto(
